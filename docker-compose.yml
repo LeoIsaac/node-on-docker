@@ -1,0 +1,13 @@
+web:
+    image: httpd
+    ports:
+        - 80:80
+    volumes:
+        - ./htdocs:/usr/local/apache2/htdocs
+
+node:
+    build: node
+    ports:
+        - 8080:8080
+    tty: true
+    command: node server.js

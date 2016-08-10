@@ -6,8 +6,9 @@ web:
         - ./htdocs:/usr/local/apache2/htdocs
 
 node:
-    build: node
+    image: node
     ports:
         - 8080:8080
+    volumes:
+        - ./node:/mnt
     tty: true
-    command: node server.js

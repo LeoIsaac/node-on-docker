@@ -7,37 +7,49 @@
 <body>
 	<input type="text" id="msg_input" style="width:200px;" />
 	<button onclick="publishMessage();">語る</button>
+	<span>現在の人数: <span id="num"></span></span>
 	<div id="msg"></div>
 	<script src="http://localhost:8080/socket.io/socket.io.js"></script>
 	<script type="text/javascript">
-	// 1.イベントとコールバックの定義
 	var socketio = io.connect('http://localhost:8080');
 
 	socketio.on("connected", function(name) {});
 	socketio.on("publish", function (data) { addMessage(data.value); });
 	socketio.on("disconnect", function () {});
+	socketio.on("counter", function(data) { counter(data.value); });
 
-	// 2.イベントに絡ませる関数の定義
 	function start(name) {
 		socketio.emit("connected", name);
 	}
 
 	function publishMessage() {
 		var textInput = document.getElementById('msg_input');
-		var msg = "[" + myName + "] " + textInput.value;
-		socketio.emit("publish", {value: msg});
-		textInput.value = '';
+		if(textInput.value !== "") {
+			var msg = "[" + myName + "] " + textInput.value;
+			socketio.emit("publish", {value: msg});
+			textInput.value = '';
+		}
 	}
 
 	function addMessage (msg) {
-		var domMeg = document.createElement('div');
+		var domMeg = document.createElement('p');
 		domMeg.innerHTML = new Date().toLocaleTimeString() + ' ' + msg;
 		msgArea.appendChild(domMeg);
 	}
 
-	// 3.開始処理
+	function counter(total) {
+		var num = document.getElementById("num");
+		num.innerHTML = total;
+		console.log("現在の人数: " + total);
+	}
+
 	var msgArea = document.getElementById("msg");
-	var myName = Math.floor(Math.random()*100) + "さん";
+	//var myName = Math.floor(Math.random()*100) + "さん";
+	var flag = true;
+	while(flag == true) {
+		var myName = prompt("あなたの名前は??");
+		if(myName !== "") flag = false;
+	}
 	addMessage("貴方は" + myName + "として入室しました");
 	start(myName);
 	</script>

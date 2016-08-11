@@ -44,8 +44,9 @@
 
 	var msgArea = document.getElementById("msg");
 	var flag = true;
-	while(flag == true) {
-		var myName = prompt("あなたの名前は??");
+	var myName = null;
+	while(flag == true || myName == null) {
+		myName = prompt("あなたの名前は??");
 		if(myName !== "") flag = false;
 	}
 	var nameArea = document.getElementById("msg_input");

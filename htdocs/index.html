@@ -25,7 +25,7 @@
 	function publishMessage() {
 		var textInput = document.getElementById('msg_input');
 		if(textInput.value !== "") {
-			var msg = "[" + myName + "] " + textInput.value;
+			var msg = textInput.value;
 			socketio.emit("publish", {value: msg});
 			textInput.value = '';
 		}
@@ -40,17 +40,16 @@
 	function counter(total) {
 		var num = document.getElementById("num");
 		num.innerHTML = total;
-		console.log("現在の人数: " + total);
 	}
 
 	var msgArea = document.getElementById("msg");
-	//var myName = Math.floor(Math.random()*100) + "さん";
 	var flag = true;
 	while(flag == true) {
 		var myName = prompt("あなたの名前は??");
 		if(myName !== "") flag = false;
 	}
-	addMessage("貴方は" + myName + "として入室しました");
+	var nameArea = document.getElementById("msg_input");
+	nameArea.setAttribute("placeholder", myName + "でログイン中");
 	start(myName);
 	</script>
 </body>

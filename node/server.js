@@ -12,15 +12,18 @@ var total = 0;
 
 io.sockets.on("connection", function (socket) {
     socket.on("connected", function (name) {
+        name = htmlspecialchars(name);
         var msg = name + "が入室しました";
         userHash[socket.id] = name;
         io.sockets.emit("publish", {value: msg});
         total++;
         io.sockets.emit("counter", {value: total});
-        console.log(userHash);
+        console.log(total);
     });
 
     socket.on("publish", function (data) {
+        data.value = htmlspecialchars(data.value);
+        data.value = "[" +  userHash[socket.id] + "] " + data.value;
         io.sockets.emit("publish", {value:data.value});
     });
 
@@ -31,7 +34,16 @@ io.sockets.on("connection", function (socket) {
             io.sockets.emit("publish", {value: msg});
             total--;
             io.sockets.emit("counter", {value: total});
-            console.log(userHash);
+            console.log(total);
         }
     });
 });
+
+function htmlspecialchars (str) {
+    str = str.replace(/&/g, "&amp;");
+    str = str.replace(/"/g, "&quot;");
+    str = str.replace(/'/g, "&#039;");
+    str = str.replace(/</g, "&lt;");
+    str = str.replace(/>/g, "&gt;");
+    return str;
+}

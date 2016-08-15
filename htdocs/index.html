@@ -1,57 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-	<meta charset="UTF-8">
-	<title>Test</title>
+	<meta charset="utf-8">
+	<title>Isaac</title>
 </head>
 <body>
-	<input type="text" id="msg_input" style="width:200px;" />
-	<button onclick="publishMessage();">語る</button>
-	<span>現在の人数: <span id="num"></span></span>
-	<div id="msg"></div>
-	<script src="http://localhost:8080/socket.io/socket.io.js"></script>
-	<script type="text/javascript">
-	var socketio = io.connect('http://localhost:8080');
-
-	socketio.on("connected", function(name) {});
-	socketio.on("publish", function (data) { addMessage(data.value); });
-	socketio.on("disconnect", function () {});
-	socketio.on("counter", function(data) { counter(data.value); });
-
-	function start(name) {
-		socketio.emit("connected", name);
-	}
-
-	function publishMessage() {
-		var textInput = document.getElementById('msg_input');
-		if(textInput.value !== "") {
-			var msg = textInput.value;
-			socketio.emit("publish", {value: msg});
-			textInput.value = '';
-		}
-	}
-
-	function addMessage (msg) {
-		var domMeg = document.createElement('p');
-		domMeg.innerHTML = new Date().toLocaleTimeString() + ' ' + msg;
-		msgArea.appendChild(domMeg);
-	}
-
-	function counter(total) {
-		var num = document.getElementById("num");
-		num.innerHTML = total;
-	}
-
-	var msgArea = document.getElementById("msg");
-	var flag = true;
-	var myName = null;
-	while(flag == true || myName == null) {
-		myName = prompt("あなたの名前は??");
-		if(myName !== "") flag = false;
-	}
-	var nameArea = document.getElementById("msg_input");
-	nameArea.setAttribute("placeholder", myName + "でログイン中");
-	start(myName);
-	</script>
+	<h1>Isaac</h1>
+	<p>このサイトは<a href="https://lab.leo-isaac.net/">lab.leo-isaac.net</a>での実験を終えて、実用段階に至ったものを公開しているとこです（不具合が無いとは言ってない）。</p>
+	<p>万が一不具合等発見した場合は<a href="https://twitter.com/intent/tweet?screen_name=@_leo_isaac?hashtag=bug" target="_blank">こちら</a>まで。
 </body>
-</html>

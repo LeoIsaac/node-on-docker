@@ -16,6 +16,11 @@ io.sockets.on("connection", function (socket) {
         var msg = name + "が入室しました";
         userHash[socket.id] = name;
         io.sockets.emit("publish", {value: msg});
+		var date = new Date();
+		msg = "[" + date.toString() + "]" + msg;
+		fs.appendFile("log.txt", msg, "utf8", function(err) {
+			console.log(err);
+		});
         total++;
         io.sockets.emit("counter", {value: total});
         console.log(total);
@@ -25,6 +30,11 @@ io.sockets.on("connection", function (socket) {
         data.value = htmlspecialchars(data.value);
         data.value = "[" +  userHash[socket.id] + "] " + data.value;
         io.sockets.emit("publish", {value:data.value});
+		var date = new Date();
+		var msg = "[" + date.toString() + "]" + data.value;
+		fs.appendFile("log.txt", msg, "utf8", function(err) {
+			console.log(err);
+		});
     });
 
     socket.on("disconnect", function () {
@@ -32,6 +42,11 @@ io.sockets.on("connection", function (socket) {
             var msg = userHash[socket.id] + "が退出しました";
             delete userHash[socket.id];
             io.sockets.emit("publish", {value: msg});
+			var date = new Date();
+			msg = "[" + date.toString() + "]" + msg;
+			fs.appendFile("log.txt", msg, "utf8", function(err) {
+				console.log(err);
+			});
             total--;
             io.sockets.emit("counter", {value: total});
             console.log(total);
